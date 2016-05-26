@@ -3,7 +3,7 @@ $(document).ready(function(){
 	
 	var count = 0;
 	var toguess = random(1,101);
-	$('#guessList').append('<li>' + toguess + '</li>');
+	var lastguess = 0;
 	
 	/*--- Display information modal box ---*/
   	$(".what").click(function(){
@@ -29,12 +29,25 @@ $(document).ready(function(){
   		else if (userguess == toguess) {
   			$('#feedback').text('Good Job!  Play again!');
   		}
+  		else if (userguess < toguess && lastguess !=0 && userguess > lastguess) {
+  			$('#feedback').text('Getting warmer!  Keep going higher!');
+  		}
+  		else if (userguess < toguess && lastguess !=0 && userguess < lastguess) {
+  			$('#feedback').text('Too low!  Go higher!');
+  		}
+  		else if (userguess > toguess && lastguess !=0 && userguess > lastguess) {
+  			$('#feedback').text('Too high!  Go lower!');
+  		}
+  		else if (userguess > toguess && lastguess !=0 && userguess < lastguess) {
+  			$('#feedback').text('Getting warmer!  Keep going lower!');
+  		}
   		else if (userguess < toguess) {
   			$('#feedback').text('Higher!');
   		}
   		else if (userguess > toguess) {
   			$('#feedback').text('Lower!');
   		}
+  		lastguess = userguess;
 
 
   		return false;
@@ -43,7 +56,6 @@ $(document).ready(function(){
   	$(".new").click(function() {
   		count = 0;
   		toguess = newGame(toguess);
-  		$('#guessList').append('<li>' + toguess + '</li>');
   	});
 
 });
@@ -52,6 +64,8 @@ function newGame(toGuess) {
 	count = 0;
 	$('#count').text(count);
 	$('#guessList').empty();
+	$('#feedback').text('Make your Guess!');
+	$('#userGuess').val('');
 	toGuess = random(1,101);
 	return toGuess;
 }
